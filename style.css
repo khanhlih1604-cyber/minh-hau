@@ -1,0 +1,810 @@
+/* ==========================================================================
+   1. BIẾN TOÀN CỤC & ĐỊNH DẠNG CƠ BẢN (Variables & Reset)
+   ========================================================================== */
+:root {
+  --cream: #FFFDF6;
+  --paper: #FFFFFF;
+  --sand: #F3E4C7;
+  --sand-soft: #FBF3E3;
+  --gold: #BE9138;
+  --gold-soft: #E7CE9C;
+  --ink: #3B2F1F;
+  --ink-soft: #8B7A5E;
+  --terracotta: #C4784A;
+  --olive: #74804F;
+  --line: #ECDFC0;
+  --shadow: 0 20px 44px -22px rgba(122, 92, 31, 0.24);
+  --radius: 26px;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+html { 
+  scroll-behavior: smooth; 
+}
+
+/* Hỗ trợ giảm hiệu ứng chuyển động nếu người dùng thiết lập trên thiết bị */
+@media (prefers-reduced-motion: reduce) {
+  * { 
+    animation-duration: 0.01ms !important; 
+    transition-duration: 0.01ms !important; 
+  }
+}
+
+body {
+  margin: 0; 
+  font-family: 'DM Sans', sans-serif; 
+  color: var(--ink);
+  background: linear-gradient(150deg, #FFFEFA 0%, var(--sand-soft) 55%, var(--sand) 100%);
+}
+
+h1, h2, h3, .display { 
+  font-family: 'Fraunces', serif; 
+  font-weight: 600; 
+}
+
+.elegant-italic { 
+  font-family: 'Fraunces', serif; 
+  font-style: italic; 
+  font-weight: 400; 
+}
+
+a { 
+  color: inherit; 
+  text-decoration: none; 
+}
+
+/* Khung chứa toàn bộ ứng dụng */
+.app { 
+  display: flex; 
+  min-height: 100vh; 
+}
+
+/* ==========================================================================
+   2. THANH ĐIỀU HƯỚNG BÊN TRÁI (Sidebar)
+   ========================================================================== */
+.sidebar {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 296px; 
+  height: 100vh;
+  background: linear-gradient(175deg, #6B5323, var(--gold) 45%, var(--gold-soft) 88%);
+  color: #fff; 
+  padding: 34px 26px; 
+  display: flex; 
+  flex-direction: column;
+  z-index: 20; 
+  overflow-y: auto;
+}
+
+.sidebar * { 
+  text-shadow: 0 1px 3px rgba(80,58,10,0.3); 
+}
+
+.sidebar::-webkit-scrollbar { 
+  width: 0; 
+}
+
+.passport-badge {
+  align-self: flex-start; 
+  font-size: 0.68rem; 
+  font-weight: 800; 
+  letter-spacing: 1.5px;
+  background: rgba(255,255,255,0.24); 
+  padding: 5px 12px; 
+  border-radius: 999px; 
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+/* Khu vực Ảnh đại diện (Avatar) */
+.avatar-wrap { 
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 18px; 
+}
+
+.avatar {
+  width: 130px; 
+  height: 130px; 
+  border-radius: 50%;
+  background: linear-gradient(150deg, #fff, var(--sand-soft));
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-family: 'Fraunces', serif; 
+  font-weight: 600; 
+  font-size: 2.3rem; 
+  color: var(--gold);
+  border: 5px solid rgba(255,255,255,0.85); 
+  box-shadow: 0 14px 30px -10px rgba(80,58,10,0.4);
+  position: relative; 
+  animation: bobble 5s ease-in-out infinite; 
+  text-shadow: none;
+  overflow: hidden;
+}
+
+@keyframes bobble { 
+  0%, 100% { transform: translateY(0) rotate(-2deg); } 
+  50% { transform: translateY(-8px) rotate(2deg); } 
+}
+
+.avatar::after { 
+  content: "📖"; 
+  position: absolute; 
+  bottom: -4px; 
+  right: -6px; 
+  font-size: 1.5rem; 
+}
+
+/* Thông tin cá nhân trên Sidebar */
+.side-name { 
+  text-align: center; 
+  font-size: 1.48rem; 
+  line-height: 1.25; 
+  margin: 4px 0 6px; 
+}
+
+.side-sub { 
+  text-align: center; 
+  font-size: 0.86rem; 
+  opacity: 0.95; 
+  margin: 0 0 18px; 
+}
+
+.side-chip {
+  display: block; 
+  text-align: center; 
+  font-size: 0.76rem; 
+  font-weight: 700;
+  background: rgba(255,255,255,0.2); 
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 7px 10px; 
+  border-radius: 12px; 
+  margin-bottom: 8px;
+}
+
+/* Menu điều hướng (Sidebar Links) */
+.side-nav { 
+  list-style: none; 
+  margin: 26px 0; 
+  padding: 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+}
+
+.side-nav a {
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  padding: 10px 14px; 
+  border-radius: 14px;
+  font-weight: 700; 
+  font-size: 0.92rem; 
+  transition: all 0.3s ease; 
+  opacity: 0.85;
+}
+
+.side-nav a .dot { 
+  width: 7px; 
+  height: 7px; 
+  border-radius: 50%; 
+  background: #fff; 
+  opacity: 0.6; 
+}
+
+.side-nav a:hover, 
+.side-nav a.active { 
+  background: rgba(255,255,255,0.22); 
+  opacity: 1; 
+  transform: translateX(4px); 
+}
+
+.side-nav a.active .dot { 
+  opacity: 1; 
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.3); 
+}
+
+/* Phần chân của Sidebar */
+.side-footer { 
+  margin-top: auto; 
+}
+
+.drive-btn {
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px;
+  background: #fff; 
+  color: var(--gold); 
+  font-weight: 800; 
+  font-size: 0.85rem;
+  padding: 12px 14px; 
+  border-radius: 999px; 
+  box-shadow: 0 10px 20px -8px rgba(80,58,10,0.35);
+  transition: transform 0.3s cubic-bezier(.3,1.4,.5,1); 
+  text-shadow: none;
+}
+
+.drive-btn:hover { 
+  transform: translateY(-3px) rotate(-1deg); 
+}
+
+.side-stamp {
+  margin-top: 16px; 
+  text-align: center; 
+  font-size: 0.72rem; 
+  opacity: 0.92; 
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   3. KHU VỰC NỘI DUNG CHÍNH & PHONG CÁCH BƯU THIẾP (Main & Postcard)
+   ========================================================================== */
+main { 
+  margin-left: 296px; 
+  flex: 1; 
+  padding: 48px 6vw 30px; 
+  max-width: 980px; 
+}
+
+.postcard {
+  position: relative; 
+  background: var(--paper); 
+  border-radius: var(--radius);
+  box-shadow: var(--shadow); 
+  border: 1px solid rgba(190,145,56,0.16);
+  padding: 44px; 
+  margin-bottom: 46px; 
+  overflow: hidden;
+}
+
+/* Băng dính trang trí (Tape effects) */
+.tape {
+  position: absolute; 
+  width: 90px; 
+  height: 28px; 
+  opacity: 0.85;
+  background: repeating-linear-gradient(45deg, var(--gold-soft), var(--gold-soft) 6px, #e9d29c 6px, #e9d29c 12px);
+  box-shadow: 0 4px 10px -4px rgba(80,58,10,0.22);
+}
+
+.tape.tl { top: -12px; left: 26px; transform: rotate(-8deg); }
+.tape.tr { 
+  top: -12px; 
+  right: 26px; 
+  transform: rotate(7deg); 
+  background: repeating-linear-gradient(45deg, #EFE3C4, #EFE3C4 6px, #E0C98C 6px, #E0C98C 12px); 
+}
+
+/* Tiêu đề các mục lớn (Section titles) */
+.section-title { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  margin-bottom: 26px; 
+}
+
+.section-title h2 { 
+  font-size: 1.5rem; 
+  margin: 0; 
+  color: var(--ink); 
+}
+
+.section-title .badge-num {
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  background: var(--sand); 
+  color: var(--gold);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-weight: 600; 
+  font-family: 'Fraunces', serif;
+}
+
+/* ==========================================================================
+   4. TRANG BÌA & DẢI THÔNG TIN (Hero & Intro Strip)
+   ========================================================================== */
+.hero-postcard .eyebrow {
+  display: inline-block; 
+  background: var(--sand); 
+  color: var(--gold); 
+  font-weight: 800;
+  font-size: 0.78rem; 
+  padding: 6px 14px; 
+  border-radius: 999px; 
+  margin-bottom: 14px;
+}
+
+.hero-postcard h1 { 
+  font-size: clamp(2rem, 4vw, 2.9rem); 
+  margin: 0 0 6px; 
+  color: var(--ink); 
+}
+
+.hero-postcard h1 span { 
+  color: var(--gold); 
+}
+
+.hero-postcard .greet-en { 
+  font-family: 'Fraunces', serif; 
+  font-style: italic; 
+  font-weight: 400; 
+  font-size: 1.3rem; 
+  color: var(--terracotta); 
+  display: block; 
+  margin-bottom: 4px; 
+}
+
+.hero-postcard p { 
+  max-width: 640px; 
+  line-height: 1.8; 
+  color: var(--ink-soft); 
+  font-size: 1.02rem; 
+}
+
+/* Tem thư trang trí (Postage stamp) */
+.stamp {
+  position: absolute; 
+  top: 40px; 
+  right: 44px; 
+  width: 92px; 
+  height: 108px;
+  background: var(--sand-soft); 
+  border-radius: 6px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  flex-direction: column; 
+  box-shadow: 0 10px 20px -8px rgba(80,58,10,0.22); 
+  transform: rotate(8deg);
+  border: 3px dashed #fff; 
+  color: var(--olive); 
+  font-weight: 800; 
+  text-align: center; 
+  font-size: 0.7rem; 
+  line-height: 1.4;
+  animation: wiggle 4s ease-in-out infinite;
+}
+
+@keyframes wiggle { 
+  0%, 100% { transform: rotate(8deg); } 
+  50% { transform: rotate(3deg); } 
+}
+
+.stamp .big { 
+  font-size: 1.5rem; 
+}
+
+/* Dải giới thiệu xen kẽ trái/phải */
+.intro-strip { 
+  margin-top: 30px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
+}
+
+.strip-row {
+  display: flex; 
+  align-items: flex-start; 
+  gap: 18px; 
+  padding: 20px 22px;
+  background: rgba(190,145,56,0.07); 
+  border: 1px dashed rgba(190,145,56,0.35);
+  border-radius: 20px;
+}
+
+.strip-row.reverse { 
+  flex-direction: row-reverse; 
+  text-align: right; 
+}
+
+.strip-icon {
+  flex-shrink: 0; 
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--terracotta)); 
+  color: #fff;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 21px;
+  box-shadow: 0 8px 16px -8px rgba(80,58,10,0.4);
+}
+
+.strip-text h3 { 
+  margin: 0 0 8px; 
+  font-size: 1.02rem; 
+  color: var(--gold); 
+}
+
+.strip-row.reverse .strip-text h3 { 
+  color: var(--terracotta); 
+}
+
+.strip-text p { 
+  margin: 0; 
+  font-size: 0.93rem; 
+  line-height: 1.75; 
+  color: var(--ink-soft); 
+}
+
+/* ==========================================================================
+   5. DÒNG HÀNH TRÌNH BÀI TẬP (Timeline / Journey)
+   ========================================================================== */
+.journey-line { 
+  position: relative; 
+  padding: 6px 0; 
+}
+
+/* Đường kẻ trục dọc đứt đoạn */
+.journey-line::before {
+  content: ""; 
+  position: absolute; 
+  left: 50%; 
+  top: 0; 
+  bottom: 0; 
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--gold-soft) 0 8px, transparent 8px 16px);
+  transform: translateX(-50%);
+}
+
+.journey-item { 
+  position: relative; 
+  width: 50%; 
+  margin-bottom: 30px; 
+}
+
+.journey-item:nth-child(odd) { 
+  padding-right: 42px; 
+  text-align: right; 
+}
+
+.journey-item:nth-child(even) { 
+  margin-left: 50%; 
+  padding-left: 42px; 
+  text-align: left; 
+}
+
+/* Nút đánh dấu số bài tập tròn trên trục dọc */
+.journey-marker {
+  position: absolute; 
+  top: 0; 
+  width: 38px; 
+  height: 38px; 
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--terracotta)); 
+  color: #fff;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-family: 'Fraunces', serif;
+  font-weight: 600; 
+  font-size: 0.92rem; 
+  box-shadow: 0 8px 16px -6px rgba(80,58,10,0.45);
+}
+
+.journey-item:nth-child(odd) .journey-marker { right: -19px; }
+.journey-item:nth-child(even) .journey-marker { left: -19px; }
+
+/* Thẻ thông tin bài tập chi tiết */
+.journey-card {
+  display: inline-block; 
+  text-align: left; 
+  width: 100%; 
+  border-radius: 20px; 
+  padding: 22px 24px;
+  background: var(--paper); 
+  border: 1.5px solid rgba(190,145,56,0.2); 
+  box-shadow: var(--shadow);
+  transition: transform 0.35s cubic-bezier(.3,1.4,.5,1);
+}
+
+.journey-item:nth-child(odd) .journey-card { border-top-right-radius: 6px; }
+.journey-item:nth-child(even) .journey-card { border-top-left-radius: 6px; }
+.journey-card:hover { transform: translateY(-5px); }
+.journey-card h3 { margin: 0 0 10px; font-size: 1.06rem; color: var(--ink); }
+
+/* Khối mục tiêu & kết quả */
+.goal-block {
+  background: rgba(190,145,56,0.1); 
+  border: 1px dashed rgba(190,145,56,0.35);
+  border-radius: 14px; 
+  padding: 12px 14px; 
+  margin: 0 0 14px;
+}
+
+.goal-line { 
+  font-size: 0.87rem; 
+  line-height: 1.6; 
+  color: var(--ink-soft); 
+  margin: 0; 
+}
+
+.goal-line + .goal-line { 
+  margin-top: 8px; 
+}
+
+.goal-label {
+  display: inline-block; 
+  font-weight: 800; 
+  font-size: 0.78rem; 
+  color: var(--gold);
+  background: #fff; 
+  border-radius: 999px; 
+  padding: 3px 10px; 
+  margin-right: 8px;
+}
+
+.goal-label.result { 
+  color: var(--terracotta); 
+}
+
+/* Nút liên kết xem báo cáo chi tiết */
+.work-link-btn {
+  display: inline-block; 
+  text-align: center; 
+  padding: 10px 18px; 
+  border-radius: 999px;
+  font-family: 'DM Sans', sans-serif; 
+  font-weight: 800; 
+  font-size: 0.82rem; 
+  color: #fff;
+  background: linear-gradient(135deg, var(--gold), var(--terracotta));
+  box-shadow: 0 10px 18px -10px rgba(80,58,10,0.45);
+  transition: transform 0.3s cubic-bezier(.3,1.4,.5,1), box-shadow 0.3s ease;
+}
+
+.work-link-btn:hover { 
+  transform: translateY(-3px) scale(1.02); 
+}
+
+/* Định dạng timeline trên màn hình nhỏ dưới 780px */
+@media (max-width: 780px) {
+  .journey-line::before { left: 19px; }
+  .journey-item, .journey-item:nth-child(odd), .journey-item:nth-child(even) {
+    width: 100%; 
+    margin-left: 0; 
+    padding-left: 48px; 
+    padding-right: 0; 
+    text-align: left;
+  }
+  .journey-item:nth-child(odd) .journey-marker, 
+  .journey-item:nth-child(even) .journey-marker { left: 0; right: auto; }
+  .journey-item:nth-child(odd) .journey-card, 
+  .journey-item:nth-child(even) .journey-card { border-radius: 20px; }
+}
+
+/* ==========================================================================
+   6. TỔNG KẾT & NHẬT KÝ SUY NGẪM (Summary & Journal)
+   ========================================================================== */
+.summary-postcard { 
+  text-align: left; 
+}
+
+.summary-postcard .section-title { 
+  justify-content: flex-start; 
+}
+
+.summary-layout { 
+  display: grid; 
+  grid-template-columns: 0.85fr 1.5fr; 
+  gap: 40px; 
+  align-items: start; 
+}
+
+@media (max-width: 780px) { 
+  .summary-layout { grid-template-columns: 1fr; } 
+}
+
+/* Cột bên trái: Trích dẫn chính & Số liệu */
+.summary-side { 
+  position: sticky; 
+  top: 24px; 
+}
+
+.summary-side .quote-main {
+  font-family: 'Fraunces', serif; 
+  font-style: italic; 
+  font-weight: 400; 
+  font-size: 1.32rem;
+  color: var(--ink); 
+  line-height: 1.55; 
+  margin: 0 0 26px; 
+  padding-left: 18px;
+  border-left: 3px solid var(--terracotta);
+}
+
+.stat-col { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 14px; 
+}
+
+.stat-col .stat-item {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 10px;
+  background: rgba(190,145,56,0.08); 
+  border: 1px dashed rgba(190,145,56,0.3);
+  border-radius: 16px; 
+  padding: 12px 16px;
+}
+
+.stat-col .num { 
+  font-family: 'Fraunces', serif; 
+  font-weight: 600; 
+  font-size: 1.5rem; 
+  color: var(--gold); 
+}
+
+.stat-col .label { 
+  font-size: 0.78rem; 
+  color: var(--ink-soft); 
+  text-align: right; 
+}
+
+/* Cột bên phải: Nhật ký suy ngẫm (Journal list) */
+.reflect-journal { 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.reflect-entry { 
+  padding: 22px 0; 
+  border-bottom: 1px dashed rgba(190,145,56,0.3); 
+}
+
+.reflect-entry:first-child { padding-top: 0; }
+.reflect-entry:last-child { border-bottom: none; padding-bottom: 0; }
+
+.reflect-entry .entry-head { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  margin-bottom: 10px; 
+}
+
+.reflect-entry .entry-num {
+  width: 34px; 
+  height: 34px; 
+  flex-shrink: 0; 
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: #fff; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-family: 'Fraunces', serif; 
+  font-weight: 600; 
+  font-size: 0.9rem;
+}
+
+.reflect-entry h3 { 
+  font-size: 1.05rem; 
+  margin: 0; 
+  color: var(--ink); 
+}
+
+.reflect-entry p { 
+  font-size: 0.92rem; 
+  line-height: 1.8; 
+  color: var(--ink-soft); 
+  margin: 0; 
+  padding-left: 46px; 
+}
+
+/* ==========================================================================
+   7. CHÂN TRANG HOÀN THIỆN (Footer)
+   ========================================================================== */
+footer { 
+  text-align: center; 
+  padding: 20px 6vw 50px; 
+  color: var(--ink-soft); 
+  font-size: 0.86rem; 
+}
+
+footer .bear { 
+  display: inline-block; 
+}
+
+/* ==========================================================================
+   8. HIỆU ỨNG HIỂN THỊ DẦN KHI CUỘN TRANG (JS Animation Effects)
+   ========================================================================== */
+.reveal { 
+  opacity: 0; 
+  transform: translateY(28px); 
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.2,.8,.3,1.1); 
+}
+
+.reveal.in-view { 
+  opacity: 1; 
+  transform: translateY(0); 
+}
+
+/* ==========================================================================
+   9. THIẾT KẾ ĐÁP ỨNG TRÊN ĐIỆN THOẠI & MÀN HÌNH NHỎ (Responsive Design)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .app { 
+    flex-direction: column; 
+  }
+  
+  /* Sidebar chuyển thành thanh ngang trên đỉnh đầu */
+  .sidebar { 
+    position: relative; 
+    width: 100%; 
+    height: auto; 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 20px 5vw; 
+  }
+  
+  .avatar-wrap { 
+    margin: 0; 
+  }
+  
+  .avatar { 
+    width: 78px; 
+    height: 78px; 
+    font-size: 1.4rem; 
+  }
+  
+  .side-name { 
+    font-size: 1.12rem; 
+    text-align: left; 
+  }
+  
+  .side-sub { 
+    text-align: left; 
+    margin-bottom: 6px; 
+  }
+  
+  .side-nav { 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    margin: 10px 0; 
+    width: 100%; 
+  }
+  
+  .side-footer { 
+    margin-top: 0; 
+    width: 100%; 
+  }
+  
+  /* Khôi phục không gian lề chính */
+  main { 
+    margin-left: 0; 
+    padding: 30px 5vw; 
+  }
+  
+  .stamp { 
+    position: static; 
+    margin: 0 auto 20px; 
+  }
+  
+  .strip-row, 
+  .strip-row.reverse { 
+    flex-direction: column; 
+    text-align: left; 
+  }
+  
+  .summary-side { 
+    position: static; 
+  }
+  
+  .reflect-entry p { 
+    padding-left: 0; 
+    margin-top: 4px; 
+  }
+}
